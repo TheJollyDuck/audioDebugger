@@ -1,0 +1,11 @@
+# Directories
+
+lib/
+build/
+
+# File Types
+*.o
+
+# Top Level Files
+.vscode
+imgui.ini
