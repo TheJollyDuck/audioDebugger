@@ -3,7 +3,7 @@
  *
  *  @author: Shauna Recto
  * 
- *  @description:
+ *  @description: The main central file of the 
  * 
  */
 
@@ -25,6 +25,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #define IMGUI_ENABLE_FREETYPE
+
+#include "implot.h"
+#include "implot_internal.h"
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
@@ -69,6 +72,7 @@ int main(int, char**) {
     /* Setup Dear ImGui context */
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -86,11 +90,14 @@ int main(int, char**) {
 
     /* Our state */
     bool show_demo_window = true;
-    bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.063f, 0.082f, 0.102f, 1.0f);
 
     fmt::print("Opening windows...\n");
-    ADMainWindow mainWindowOj;
+    ADMainWindow mainWindowOBj;
+
+    ADAudioPlayback testMusic("assets/audioSamples/shooting_star.flac");
+
+    testMusic.playAudio();
 
     while (!glfwWindowShouldClose(window)) {
 
@@ -108,7 +115,7 @@ int main(int, char**) {
         }
 
         /* Main Window */
-        mainWindowOj.update();
+        mainWindowOBj.update();
 
         // Rendering
         ImGui::Render();
@@ -126,6 +133,7 @@ int main(int, char**) {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    ImPlot::DestroyContext();
 
     glfwDestroyWindow(window);
     glfwTerminate();
