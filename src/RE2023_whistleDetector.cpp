@@ -14,3 +14,12 @@
 
 
 #include "RE2023_whistleDetector.h"
+
+AD_RE2023_Whistle_Detector::AD_RE2023_Whistle_Detector() {
+    const std::string baseDir = "assets/neuralNetworks/";
+    whistleDetModel = std::make_unique<NeuralNetwork::Model>(baseDir + "whistle_model.h5");
+}
+
+AD_RE2023_Whistle_Detector::~AD_RE2023_Whistle_Detector() {
+
+}

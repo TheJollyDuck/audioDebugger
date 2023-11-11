@@ -13,10 +13,17 @@
 #ifndef RE_2023_WD_H
 #define RE_2023_WD_H
 
+#include "CompiledNN/Model.h"
+#include "CompiledNN/CompiledNN.h"
+
     class AD_RE2023_Whistle_Detector {
         private:
             float lowerConfidenceThresh;
             float upperConfidenceThresh;
+
+            /* CompiledNN members */
+            NeuralNetwork::CompiledNN whistleDetCompNN;
+            std::unique_ptr<NeuralNetwork::Model> whistleDetModel;
 
         public:
             AD_RE2023_Whistle_Detector();

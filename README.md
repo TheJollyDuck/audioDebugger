@@ -1,34 +1,63 @@
 # audioDebugger
-audioDebugger is a audio analysis tool developed for debugging audio related code used in RoboCup. If the tool is to be used by other teams, this project should be considered as a contribution by the RoboÉireann team.
+audioDebugger is a audio analysis tool developed for debugging audio related
+code used in RoboCup. If the tool is to be used by other teams, this project
+should be considered as a contribution by the RoboÉireann team.
+
+> :warning: Please note that that this is a WIP! It is currently not capable of analysis
+just yet (as of 11/11/2023). It is currently in a phase of feature and backend implementation.
 
 # Motivation
 As more and more developments in the RoboCup rules are trying to eliminate dependence on wireless forms of communication to each robot and by the Game Controller, audio is one of the next areas of development by teams, especially through Whistle Detectors and encoded signals through audio transmission. This tool aims to conveniently provide utility in analyzing obtained audio data.
 
 # Requirements & Dependencies
-As of this current state, there are several external libraries that are used for building this code. Your mileage may vary if you plan to build on non-arch based or non-rolling release distributions.
+This project relies on several external libraries, some of which have been
+precompiled for ease of use. Your mileage may vary if you plan to build on
+non-arch based or non-rolling release distributions, however. In this case, a
+recompiling is necessary for these libraries. As such, I can try to provide, but
+will not have proper means to debug outside of Arch.
 
-The current state of the machine used in compiling this code:
+The machine I use to compile the project is as follows:
 - Arch Linux
 - Plasma (Wayland)
 - fmt library from the [AUR](https://aur.archlinux.org/packages/fmt-git)
 - Audio provided by PipeWire (`pipewire, pipewire-pulse, pipewire-jack, wireplumber`)
 
-Dependencies include (but does not include all their depdendencies):
-- [Dear ImGUI](https://github.com/ocornut/imgui)
-- [ImPlots](https://github.com/epezent/implot)
-- [FFTW3](https://fftw.org/)
-- [miniaudio](https://github.com/mackron/miniaudio)
-  - Depends on JACK & ALSA
+Included dependencies located in `lib/` are:
+- [Dear ImGUI](https://github.com/ocornut/imgui) - For the Graphics UI.
+- [ImPlots](https://github.com/epezent/implot) - For expanded plotting data.
+- [FFTW3](https://fftw.org/) - FFT library. Can be replaced with [kissfft](https://github.com/mborgerding/kissfft).
+- [miniaudio](https://github.com/mackron/miniaudio) - For audio parsing and playback.
+- [CompiledNN](https://github.com/bhuman/CompiledNN) - For NN implementation.
+  Can be replaced with TFLite
+  - NOTE: This one has been compiled by me. Recompile if necessary.
+  - If you do this, then it is recommended to include from `/usr/local/lib/`.
 
-These 
-You can install some of the required packages, via Pacman:
+The project also depends on system libraries as these are harder to incorporate
+into the system itself. You can install them via Pacman (or any other package
+manager but the names will be different):
+
 ```bash
-# pacman -S base-devel fftw glfw-wayland fmt alsa-lib
+# pacman -S base-devel fftw glfw-wayland fmt alsa-lib hdf5-mpi protobuf
 ```
 
 # Building
-Building is done through the makefile, with a simple `make`, with the executable located in `build`.
+Building is done through the makefile, and so you can execute the following:
+```bash
+mkdir build
+make
+```
+
+If there is enough interest and would speed up the process of using the program,
+I can try and implement an `PKGBUILD` for the AUR.
 
 # Licences
-- Audio in the `assets/audioSamples` directory are licensed with the CC-BY-NC-SA 3.0 license.
-- Josefin Sans font is licensed with the OFL license.
+Licenses for all of the libraries, fonts, and audio are located in each of their
+directories. For RoboÉireann code adapted for the project, see
+[here](https://github.com/roboeireann/RoboEireannCodeRelease/blob/main/Licence.md).
+
+A quick list of all the different types of licenses in this project include:
+- BSD (3 Clause)
+- MIT License
+- GPLv2 License
+- OFL License
+- CC-BY-NC-SA 3.0

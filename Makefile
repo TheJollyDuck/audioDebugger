@@ -7,6 +7,7 @@ SOURCE_DIR = src
 IMGUI_DIR = lib/imgui
 IMPLOT_DIR = lib/implot
 MINI_AUDIO_DIR = lib/miniaudio
+COMP_NN_DIR = lib/CompiledNN
 
 # Project Files
 SOURCES =   $(SOURCE_DIR)/main.cpp \
@@ -35,13 +36,20 @@ SOURCES +=  $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp \
 SOURCES +=  $(MINI_AUDIO_DIR)/miniaudio.c \
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
+
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++17 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(MINI_AUDIO_DIR) -I$(IMPLOT_DIR)
-CXXFLAGS += -g -Wall -Wformat -Wextra -msse2 -mavx2
-LIBS = -lm -lfmt -lpthread -ldl -lfftw3f
+CXXFLAGS = -std=c++17 \
+			 -I$(IMGUI_DIR) \
+			 -I$(IMGUI_DIR)/backends \
+			 -I$(MINI_AUDIO_DIR) \
+			 -I$(IMPLOT_DIR) \
+			 -I$(COMP_NN_DIR)
 
-LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3`
+CXXFLAGS += -g -Wall -Wformat -Wextra -msse2 -mavx2
+LIBS = -lm -lfmt -lpthread -ldl -lfftw3f -lhdf5
+LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3 protobuf`
+LIBS += -L$(COMP_NN_DIR) -l:libCompiledNN.a
 
 CXXFLAGS += `pkg-config --cflags glfw3`
 CFLAGS = $(CXXFLAGS)
