@@ -14,6 +14,7 @@ SOURCES =   $(SOURCE_DIR)/main.cpp \
 			$(SOURCE_DIR)/adFFT.cpp \
 			$(SOURCE_DIR)/audioPlayback.cpp \
 			$(SOURCE_DIR)/audioRW.cpp \
+			$(SOURCE_DIR)/RE2023_whistleDetector.cpp \
 
 # IMGUI Dependencies
 SOURCES +=  $(IMGUI_DIR)/imgui.cpp \
@@ -22,6 +23,7 @@ SOURCES +=  $(IMGUI_DIR)/imgui.cpp \
 			$(IMGUI_DIR)/imgui_tables.cpp \
 			$(IMGUI_DIR)/imgui_widgets.cpp \
 
+# IMPLOT Dependencies
 SOURCES +=  $(IMPLOT_DIR)/implot_demo.cpp \
 			$(IMPLOT_DIR)/implot_items.cpp \
 			$(IMPLOT_DIR)/implot.cpp \

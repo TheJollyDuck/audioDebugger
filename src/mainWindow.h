@@ -1,9 +1,10 @@
 /*
+ *  @name: mainWindow.h
  *
- *
+ *  @author: Shauna Recto
  * 
- * 
- * 
+ *  @description: This header contains all the necessary member declarations
+ *      and default initializaitons for the main window of the program.
  * 
  */
 

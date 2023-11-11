@@ -1,9 +1,10 @@
 /*
+ *  @name: audioPlayback.cpp
  *
- *
+ *  @author: Shauna Recto
  * 
- * 
- * 
+ *  @description: This source file contains the implementations of the Audio
+ *      Playback class.
  * 
  */
 

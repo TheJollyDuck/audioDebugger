@@ -3,7 +3,9 @@
  *
  *  @author: Shauna Recto
  * 
- *  @description: The main central file of the 
+ *  @description: The main central file of the program that should have most
+ *      if not all the top level functions, with most of the code abstracted in
+ *      the rest of the headers and sourch files.
  * 
  */
 
@@ -36,6 +38,7 @@
 #include "adFFT.h"
 #include "audioPlayback.h"
 #include "audioRW.h"
+#include "RE2023_whistleDetector.h"
 
 #include "tempSettings.h"
 

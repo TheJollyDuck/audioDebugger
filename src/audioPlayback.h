@@ -1,9 +1,14 @@
 /*
+ *  @name: audioPlayback.h
  *
- *
+ *  @author: Shauna Recto
  * 
+ *  @description: This header file contains the member declarations and default
+ *      initializations of the Audio Playback Class.
  * 
- * 
+ *      This current implementation uses the miniaudio library for simplistic
+ *      implementation, but can be substituted via other libraries such as
+ *      PortAudio? I've not used it before and so can't guarantee it as such.
  * 
  */
 

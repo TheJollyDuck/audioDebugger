@@ -1,9 +1,10 @@
 /*
+ *  @name: audioRW.h
  *
- *
+ *  @author: Shauna Recto
  * 
- * 
- * 
+ *  @description: This header contains the member declarations and default
+ *      initializations of the Audio Read/Write Class.
  * 
  */
 

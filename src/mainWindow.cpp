@@ -1,9 +1,13 @@
 /*
+ *  @name: mainWindow.cpp
  *
- *
+ *  @author: Shauna Recto
  * 
+ *  @description: This source file contains all the necessaru implementations
+ *      of the main window, and all the different GUI functionalities.
  * 
- * 
+ *      It also (should TODO) contains all the boilerplate and the GLFW and
+ *      ImGui initializations for the windows.
  * 
  */
 

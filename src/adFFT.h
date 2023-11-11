@@ -1,10 +1,14 @@
 /*
+ *  @name: adFFT.h
  *
- *
+ *  @author: Shauna Recto
  * 
+ *  @description: This header file contains all the necessary declarations and
+ *      default definitions of members of the FFT class.
  * 
- * 
- * 
+ *      The default implementation of the program is using the Arch upstream 
+ *      version of FFTW, but can be substituted with a different implementation
+ *      such as KissFFT.
  */
 
 #include <fftw3.h>
@@ -18,7 +22,7 @@
         private:
             std::vector<float> rawAudio;                // Sample buffers for all channels.
             std::vector<float> monoBuffer;              // Mono mixdown buffer.
-            std::vector<float> leftOverBuffer;           // Unused samples for next cycle.
+            std::vector<float> leftOverBuffer;          // Unused samples for next cycle.
 
             /* FFTW related members */
             float *samples;          // The samples that will be used with the FFT
