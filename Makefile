@@ -36,7 +36,7 @@ OBJS = $(addprefix $(BUILD_DIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)
 LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++17 -I$(IMGUI_DIR) -I$(IMGUI_DIR)/backends -I$(MINI_AUDIO_DIR) -I$(IMPLOT_DIR)
-CXXFLAGS += -g -Wall -Wformat -Wextra
+CXXFLAGS += -g -Wall -Wformat -Wextra -msse2 -mavx2
 LIBS = -lm -lfmt -lpthread -ldl -lfftw3f
 
 LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3`

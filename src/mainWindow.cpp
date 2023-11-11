@@ -10,6 +10,7 @@
 #include <cmath>
 #include <fmt/core.h>
 #include "mainWindow.h"
+#include "tempSettings.h"
 
 ADMainWindow::ADMainWindow() {
     windowFlags = 0;
@@ -84,37 +85,24 @@ void ADMainWindow::showOscilloscope() {
         ImGui::PushItemWidth(100.f);
 
         if (ImGui::TreeNode("Audio")) {
-            static float tempAudioGain = 2.7;
-            static int tempSamplingRate = 44100;
-
-            ImGui::InputFloat("Mono Audio Gain", &tempAudioGain);
-            ImGui::InputInt("Sampling Rate (Hz)", &tempSamplingRate);
+            ImGui::InputFloat("Mono Audio Gain", &tempConf_AudioGain);
+            ImGui::InputInt("Sampling Rate (Hz)", &tempConf_SamplingRate);
             ImGui::TreePop();
         }
 
         if (ImGui::TreeNode("Spectrogram")) {
-            static int tempFFTSize = 256;
-            static int tempFFTStep = 128;
-            static int tempNumFFTs = 15;
-
-            ImGui::InputInt("FFT Size", &tempFFTSize);
-            ImGui::InputInt("FFT Step", &tempFFTStep);
-            ImGui::InputInt("Number of FFTs", &tempNumFFTs);
+            ImGui::InputInt("FFT Size", &tempConf_FFTSize);
+            ImGui::InputInt("FFT Step", &tempConf_FFTStep);
+            ImGui::InputInt("Number of FFTs", &tempConf_NumFFTs);
             ImGui::TreePop();
         }
 
         if (ImGui::TreeNode("Whistle Detector")) {
-            static int tempDetTimeoutMs = 600;
-            static float tempWhistleBias = 1.3;
-            static float tempWhistleConfidenceThresh = 0.25;
-            static float tempUpperWhistleConfidenceThresh = 0.70;
-            static int tempAveragingLen = 3;
-
-            ImGui::InputInt("Detection Timeout (ms)", &tempDetTimeoutMs);
-            ImGui::InputFloat("Whistle Bias", &tempWhistleBias);
-            ImGui::InputFloat("Lower Whistle Confidence Threshold", &tempWhistleConfidenceThresh);
-            ImGui::InputFloat("Upper Whistle Confidence Threshold", &tempUpperWhistleConfidenceThresh);
-            ImGui::InputInt("Confidence Averaging Length", &tempAveragingLen);
+            ImGui::InputInt("Detection Timeout (ms)", &tempConf_DetTimeoutMs);
+            ImGui::InputFloat("Whistle Bias", &tempConf_WhistleBias);
+            ImGui::InputFloat("Lower Whistle Confidence Threshold", &tempConf_WhistleConfidenceThresh);
+            ImGui::InputFloat("Upper Whistle Confidence Threshold", &tempConf_UpperWhistleConfidenceThresh);
+            ImGui::InputInt("Confidence Averaging Length", &tempConf_AveragingLen);
             ImGui::TreePop();
         }
         

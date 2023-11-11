@@ -45,6 +45,8 @@ void ADAudioPlayback::dataCallback(ma_device *pDev, void *pOut, const void *pIn,
 
     ma_decoder *pDec = static_cast<ma_decoder *>(pDev->pUserData);
     if (pDec == nullptr) {return;}
+
+    fmt::print("Number of read frames: {} ...\n", frameCount);
     ma_decoder_read_pcm_frames(pDec, pOut, frameCount, nullptr);
     static_cast<void>(pIn);
 }

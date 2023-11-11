@@ -37,13 +37,7 @@
 #include "audioPlayback.h"
 #include "audioRW.h"
 
-/* TEMPORARY CONSTANT DECLARATIONS */
-const int WINDOW_W = 1600;
-const int WINDOW_H = 900;
-const static std::string PROGRAM_NAME = "RoboÉireann audioDebugger";
-
-const std::string FONT_FNAME = "assets/fonts/JosefinSans-Regular.ttf";
-const float FONT_SIZE = 14.0f;
+#include "tempSettings.h"
 
 static void glfw_error_callback(int, const char*);
 void customTestWindow(ImGuiIO *, bool &, bool &, ImVec4 *);
@@ -61,7 +55,7 @@ int main(int, char**) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     /* Create window with graphics context */
-    GLFWwindow* window = glfwCreateWindow(WINDOW_W, WINDOW_H, PROGRAM_NAME.c_str(), nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(tempConf_WINDOW_W, tempConf_WINDOW_H, tempConf_PROGRAM_NAME.c_str(), nullptr, nullptr);
     if (window == nullptr) {
         return EXIT_FAILURE;
     }
@@ -85,7 +79,7 @@ int main(int, char**) {
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     /* Load Fonts */ 
-    ImFont* font = io.Fonts->AddFontFromFileTTF(FONT_FNAME.c_str(), FONT_SIZE);
+    ImFont* font = io.Fonts->AddFontFromFileTTF(tempConf_FONT_FNAME.c_str(), tempConf_FONT_SIZE);
     IM_ASSERT(font != nullptr);
 
     /* Our state */
@@ -95,9 +89,9 @@ int main(int, char**) {
     fmt::print("Opening windows...\n");
     ADMainWindow mainWindowOBj;
 
-    // ADAudioPlayback testMusic("assets/audioSamples/shooting_star.flac");
+    ADAudioPlayback testMusic(tempConf_audioFile.c_str());
 
-    // testMusic.playAudio();
+    testMusic.playAudio();
 
     while (!glfwWindowShouldClose(window)) {
 
