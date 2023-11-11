@@ -92,9 +92,9 @@ int main(int, char**) {
     fmt::print("Opening windows...\n");
     ADMainWindow mainWindowOBj;
 
-    ADAudioPlayback testMusic(tempConf_audioFile.c_str());
+    // ADAudioPlayback testMusic(tempConf_audioFile.c_str());
 
-    testMusic.playAudio();
+    // testMusic.playAudio();
 
     while (!glfwWindowShouldClose(window)) {
 
