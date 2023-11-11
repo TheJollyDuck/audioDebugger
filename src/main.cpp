@@ -95,9 +95,9 @@ int main(int, char**) {
     fmt::print("Opening windows...\n");
     ADMainWindow mainWindowOBj;
 
-    ADAudioPlayback testMusic("assets/audioSamples/shooting_star.flac");
+    // ADAudioPlayback testMusic("assets/audioSamples/shooting_star.flac");
 
-    testMusic.playAudio();
+    // testMusic.playAudio();
 
     while (!glfwWindowShouldClose(window)) {
 

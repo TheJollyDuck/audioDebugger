@@ -15,6 +15,11 @@ ADMainWindow::ADMainWindow() {
     windowFlags = 0;
     
     if (bShowTopMenu) {windowFlags |= ImGuiWindowFlags_MenuBar;}
+    windowFlags |= ImGuiWindowFlags_NoMove;
+
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
 }
 
 ADMainWindow::~ADMainWindow() {
@@ -31,7 +36,7 @@ void ADMainWindow::update() {
 void ADMainWindow::showMenu() {
 
     if (ImGui::BeginMenuBar()) {
-        if (ImGui::BeginMenu("Menu")) {
+        if (ImGui::BeginMenu("File")) {
             ImGui::MenuItem("Open Audio File", nullptr, nullptr);
             ImGui::MenuItem("Open Video File", nullptr, nullptr);
             ImGui::MenuItem("Open Open B-Human Log", nullptr, nullptr);
@@ -55,58 +60,97 @@ void ADMainWindow::showMenu() {
 void ADMainWindow::showOscilloscope() {
 
     if (bShowOscilloscope) {
-        static bool animate = true;
-        ImGui::Checkbox("Animate", &animate);
 
-        static float arr[] = { 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f };
-        ImGui::PlotLines("Frame Times", arr, IM_ARRAYSIZE(arr));
-        ImGui::PlotHistogram("Histogram", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0, 80.0f));
+        /* Raw Audio Output */
+        ImGui::BeginChild("Raw Audio Output", ImVec2(770, 450), ImGuiChildFlags_Border);
+        ImGui::SeparatorText("Raw Audio Output");
+        ImGui::EndChild();
 
-        // Fill an array of contiguous float values to plot
-        // Tip: If your float aren't contiguous but part of a structure, you can pass a pointer to your first float
-        // and the sizeof() of your structure in the "stride" parameter.
-        static float values[90] = {};
-        static int values_offset = 0;
-        static double refresh_time = 0.0;
-        if (!animate || refresh_time == 0.0)
-            refresh_time = ImGui::GetTime();
-        while (refresh_time < ImGui::GetTime()) // Create data at fixed 60 Hz rate for the demo
-        {
-            static float phase = 0.0f;
-            values[values_offset] = cosf(phase);
-            values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
-            phase += 0.10f * values_offset;
-            refresh_time += 1.0f / 60.0f;
-        }
-
-        // Plots can display overlay texts
-        // (in this example, we will display an average value)
-        {
-            float average = 0.0f;
-            for (int n = 0; n < IM_ARRAYSIZE(values); n++)
-                average += values[n];
-            average /= (float)IM_ARRAYSIZE(values);
-            char overlay[32];
-            sprintf(overlay, "avg %f", average);
-            ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values), values_offset, overlay, -1.0f, 1.0f, ImVec2(0, 80.0f));
-        }
-
-        // Use functions to generate output
-        // FIXME: This is actually VERY awkward because current plot API only pass in indices.
-        // We probably want an API passing floats and user provide sample rate/count.
-        struct Funcs
-        {
-            static float Sin(void*, int i) { return sinf(i * 0.1f); }
-            static float Saw(void*, int i) { return (i & 1) ? 1.0f : -1.0f; }
-        };
-        static int func_type = 0, display_count = 70;
-        ImGui::SeparatorText("Functions");
-        ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-        ImGui::Combo("func", &func_type, "Sin\0Saw\0");
+        /* Downmixed Mono Audio Output */
         ImGui::SameLine();
-        ImGui::SliderInt("Sample count", &display_count, 1, 400);
-        float (*func)(void*, int) = (func_type == 0) ? Funcs::Sin : Funcs::Saw;
-        ImGui::PlotLines("Lines", func, NULL, display_count, 0, NULL, -1.0f, 1.0f, ImVec2(0, 80));
-        ImGui::PlotHistogram("Histogram", func, NULL, display_count, 0, NULL, -1.0f, 1.0f, ImVec2(0, 80));
+        ImGui::BeginChild("Mono Audio Downmix", ImVec2(770, 450), ImGuiChildFlags_Border);
+        ImGui::SeparatorText("Mono Audio Downmix");
+        ImGui::EndChild();
+
+        /* Spectrogram Output */
+        ImGui::BeginChild("Spectrogram", ImVec2(1150, 450), ImGuiChildFlags_Border);
+        ImGui::SeparatorText("Spectrogram");
+        ImGui::EndChild();
+
+        /* Configuration */
+        ImGui::SameLine();
+        ImGui::BeginChild("Configuration", ImVec2(390, 450), ImGuiChildFlags_Border);
+        ImGui::SeparatorText("Configuration");
+        ImGui::PushItemWidth(100.f);
+
+        if (ImGui::TreeNode("Audio")) {
+            static float tempAudioGain = 2.7;
+            static int tempSamplingRate = 44100;
+
+            ImGui::InputFloat("Mono Audio Gain", &tempAudioGain);
+            ImGui::InputInt("Sampling Rate (Hz)", &tempSamplingRate);
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Spectrogram")) {
+            static int tempFFTSize = 256;
+            static int tempFFTStep = 128;
+            static int tempNumFFTs = 15;
+
+            ImGui::InputInt("FFT Size", &tempFFTSize);
+            ImGui::InputInt("FFT Step", &tempFFTStep);
+            ImGui::InputInt("Number of FFTs", &tempNumFFTs);
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Whistle Detector")) {
+            static int tempDetTimeoutMs = 600;
+            static float tempWhistleBias = 1.3;
+            static float tempWhistleConfidenceThresh = 0.25;
+            static float tempUpperWhistleConfidenceThresh = 0.70;
+            static int tempAveragingLen = 3;
+
+            ImGui::InputInt("Detection Timeout (ms)", &tempDetTimeoutMs);
+            ImGui::InputFloat("Whistle Bias", &tempWhistleBias);
+            ImGui::InputFloat("Lower Whistle Confidence Threshold", &tempWhistleConfidenceThresh);
+            ImGui::InputFloat("Upper Whistle Confidence Threshold", &tempUpperWhistleConfidenceThresh);
+            ImGui::InputInt("Confidence Averaging Length", &tempAveragingLen);
+            ImGui::TreePop();
+        }
+        
+        ImGui::EndChild();
+
+        // static float arr[] = { 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f };
+        // ImGui::PlotLines("Frame Times", arr, IM_ARRAYSIZE(arr));
+
+        // // Fill an array of contiguous float values to plot
+        // // Tip: If your float aren't contiguous but part of a structure, you can pass a pointer to your first float
+        // // and the sizeof() of your structure in the "stride" parameter.
+        // static float values[90] = {};
+        // static int values_offset = 0;
+        // static double refresh_time = 0.0;
+        // if (!animate || refresh_time == 0.0)
+        //     refresh_time = ImGui::GetTime();
+        // while (refresh_time < ImGui::GetTime()) // Create data at fixed 60 Hz rate for the demo
+        // {
+        //     static float phase = 0.0f;
+        //     values[values_offset] = cosf(phase);
+        //     values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
+        //     phase += 0.10f * values_offset;
+        //     refresh_time += 1.0f / 60.0f;
+        // }
+
+        // // Plots can display overlay texts
+        // // (in this example, we will display an average value)
+        // {
+        //     float average = 0.0f;
+        //     for (int n = 0; n < IM_ARRAYSIZE(values); n++)
+        //         average += values[n];
+        //     average /= (float)IM_ARRAYSIZE(values);
+        //     char overlay[32];
+        //     sprintf(overlay, "avg %f", average);
+        //     ImGui::PlotLines("Lines", values, IM_ARRAYSIZE(values), values_offset, overlay, -1.0f, 1.0f, ImVec2(0, 80.0f));
+        // }
+
     }
 }
