@@ -1,0 +1,20 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: archlinux-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: mkdir build
+      run: mkdir build
+    - name: make
+      run: make
+
